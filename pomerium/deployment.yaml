@@ -1,0 +1,92 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pomerium
+spec:
+  replicas: 2
+  template:
+    spec:
+      containers:
+      - args:
+        - -config
+        - /etc/pomerium/policy.yaml
+        env:
+        - name: SERVICES
+          value: all
+        - name: POMERIUM_DEBUG
+          value: "true"
+        - name: INSECURE_SERVER
+          value: "TRUE"
+        - name: FORWARD_AUTH_URL
+          valueFrom:
+            configMapKeyRef:
+              key: POMERIUM_FWDAUTH_URL
+              name: pomerium-urls
+        - name: AUTHENTICATE_SERVICE_URL
+          valueFrom:
+            configMapKeyRef:
+              key: POMERIUM_AUTHENTICATE_URL
+              name: pomerium-urls
+        - name: IDP_CLIENT_ID
+          valueFrom:
+            configMapKeyRef:
+              key: POMERIUM_IDP_CLIENT_ID
+              name: pomerium
+        - name: IDP_CLIENT_ID
+          valueFrom:
+            configMapKeyRef:
+              key: POMERIUM_IDP_CLIENT_ID
+              name: pomerium
+        - name: COOKIE_SECRET
+          valueFrom:
+            secretKeyRef:
+              key: cookie-secret
+              name: pomerium
+        - name: SHARED_SECRET
+          valueFrom:
+            secretKeyRef:
+              key: shared-secret
+              name: pomerium
+        - name: IDP_CLIENT_ID
+          valueFrom:
+            secretKeyRef:
+              key: idp-client-id
+              name: pomerium
+        - name: IDP_CLIENT_SECRET
+          valueFrom:
+            secretKeyRef:
+              key: idp-client-secret
+              name: pomerium
+        image: pomerium/pomerium
+        imagePullPolicy: Always
+        livenessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /ping
+            port: 443
+            scheme: HTTP
+        name: pomerium
+        ports:
+        - containerPort: 443
+          name: https
+          protocol: TCP
+        readinessProbe:
+          httpGet:
+            path: /ping
+            port: 443
+            scheme: HTTP
+        resources:
+          limits:
+            cpu: 500m
+            memory: 256Mi
+          requests:
+            cpu: 100m
+            memory: 128Mi
+        volumeMounts:
+        - mountPath: /etc/pomerium/
+          name: policy
+      volumes:
+      - configMap:
+          defaultMode: 420
+          name: pomerium
+        name: policy

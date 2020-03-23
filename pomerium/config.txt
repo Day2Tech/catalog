@@ -1,0 +1,7 @@
+POMERIUM_AUTHENTICATE_HOST=pomerium-authn.example.com
+POMERIUM_AUTHORIZE_HOST=pomerium-authz.example.com
+POMERIUM_FWDAUTH_HOST=pomerium-fwdauth.example.com
+# See https://docs.pomerium.io/configuration/#identity-provider-name
+POMERIUM_IDP_PROVIDER=google
+# used by `ingress.yaml` by default.
+CERT_MANAGER_ISSUER=letsencrypt-staging

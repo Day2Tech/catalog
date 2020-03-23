@@ -1,0 +1,5 @@
+policy:
+  - from: http://corp-service.example.com
+    to: http://service.namespace:81
+    allowed_users:
+    - bob@example.com
