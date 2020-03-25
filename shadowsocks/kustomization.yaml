@@ -1,0 +1,39 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+commonLabels:
+  day2.tech/app: shadowsocks
+namespace: shadowsocks
+
+resources:
+- deployment.yaml
+- service.yaml
+- ingress.yaml
+- namespace.yaml
+
+secretGenerator:
+- name: shadowsocks
+  envs:
+  - secret.txt
+  type: Opaque
+
+configMapGenerator:
+  - name: shadowsocks
+    envs:
+    - config.txt
+
+vars:
+- name: CERT_MANAGER_ISSUER
+  objref:
+    kind: ConfigMap
+    name: shadowsocks
+    apiVersion: v1
+  fieldref:
+    fieldpath: data.CERT_MANAGER_ISSUER
+- name: SHADOWSOCKS_DOMAIN
+  objref:
+    kind: ConfigMap
+    name: shadowsocks
+    apiVersion: v1
+  fieldref:
+    fieldpath: data.SHADOWSOCKS_DOMAIN

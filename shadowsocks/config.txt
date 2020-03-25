@@ -1,0 +1,2 @@
+CERT_MANAGER_ISSUER=letsencrypt-staging
+SHADOWSOCKS_DOMAIN=shadowsocks.changeme.example.com
