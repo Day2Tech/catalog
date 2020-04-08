@@ -1,0 +1,8 @@
+resources:
+- common-network-policy-operator.yaml
+- policies.yaml
+
+namespace: common-network-policy-operator-system
+
+commonLabels:
+  app: common-network-policy-operator
