@@ -1,10 +1,10 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-commonLabels:
-  day2.tech/app: pomerium
-
 configurations:
 - kustomize-config.yaml
+
+commonLabels:
+  app: pomerium
 namespace: pomerium
 
 resources:
@@ -19,7 +19,7 @@ configMapGenerator:
       - policy.yaml
   - name: pomerium
     envs:
-    - config.txt
+    - config.env
 
   - name: pomerium-urls
     literals:
@@ -29,7 +29,7 @@ configMapGenerator:
 secretGenerator:
 - name: pomerium
   envs:
-  - secret.txt
+  - secret.env
   type: Opaque
 
 vars:
