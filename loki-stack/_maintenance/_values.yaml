@@ -1,0 +1,49 @@
+loki:
+  enabled: true
+  persistence:
+    enabled: false
+    accessModes:
+    - ReadWriteOnce
+    size: 100Gi
+  replicas: 1
+
+
+grafana:
+  enabled: true
+  sidecar:
+    datasources:
+      enabled: true
+  image:
+    tag: 6.7.0
+  resources:
+   limits:
+     cpu: 1000m
+     memory: 256Mi
+   requests:
+     cpu: 100m
+     memory: 256Mi
+persistence:
+  type: pvc
+  enabled: true
+  # storageClassName: default
+  accessModes:
+    - ReadWriteOnce
+  size: 10Gi
+  # annotations: {}
+  finalizers:
+    - kubernetes.io/pvc-protection
+  # subPath: ""
+  # existingClaim:
+  admin:
+    existingSecret: "grafana-admin-login"
+    userKey: admin-user
+    passwordKey: admin-password
+
+prometheus:
+  enabled: false
+
+promtail:
+  enabled: true
+
+fluent-bit:
+  enabled: false
