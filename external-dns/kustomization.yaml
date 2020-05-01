@@ -1,7 +1,6 @@
 resources:
 - namespace.yaml
 - external-dns.yaml
-- secret.yaml
 
 namespace: external-dns-operator
 
@@ -10,5 +9,6 @@ commonLabels:
 
 secretGenerator:
 - name: external-dns
-  env: secret.env
+  envs: 
+  - secret.env
   type: Opaque
