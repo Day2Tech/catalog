@@ -88,5 +88,5 @@ spec:
       volumes:
       - configMap:
           defaultMode: 420
-          name: pomerium
+          name: pomerium-policy
         name: policy
