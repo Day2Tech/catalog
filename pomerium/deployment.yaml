@@ -17,6 +17,11 @@ spec:
           value: "true"
         - name: INSECURE_SERVER
           value: "TRUE"
+        - name: POMERIUM_IDP_PROVIDER
+          valueFrom:
+            configMapKeyRef:
+              key: POMERIUM_IDP_PROVIDER
+              name: pomerium
         - name: FORWARD_AUTH_URL
           valueFrom:
             configMapKeyRef:
