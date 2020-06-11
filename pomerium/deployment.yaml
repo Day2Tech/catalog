@@ -29,13 +29,13 @@ spec:
               name: pomerium-urls
         - name: IDP_CLIENT_ID
           valueFrom:
-            configMapKeyRef:
-              key: POMERIUM_IDP_CLIENT_ID
+            secretKeyRef:
+              key: idp-client-id
               name: pomerium
-        - name: IDP_CLIENT_ID
+        - name: IDP_CLIENT_SECRET
           valueFrom:
-            configMapKeyRef:
-              key: POMERIUM_IDP_CLIENT_ID
+            secretKeyRef:
+              key: idp-client-secret
               name: pomerium
         - name: COOKIE_SECRET
           valueFrom:
