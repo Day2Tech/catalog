@@ -17,7 +17,7 @@ spec:
           value: "true"
         - name: INSECURE_SERVER
           value: "TRUE"
-        - name: POMERIUM_IDP_PROVIDER
+        - name: IDP_PROVIDER
           valueFrom:
             configMapKeyRef:
               key: POMERIUM_IDP_PROVIDER
