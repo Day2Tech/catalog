@@ -7,7 +7,7 @@ spec:
     spec:
       containers:
       - name: shadowsocks
-        image: mazy/ss-v2ry
+        image: mazy/ss-v2ray
         env:
         - name: PASSWORD
           valueFrom:
