@@ -1,16 +1,15 @@
 ---
 # Source: loki-stack/charts/grafana/templates/podsecuritypolicy.yaml
 apiVersion: policy/v1beta1
-
-PodSecurityPolicy
+kind: PodSecurityPolicy
 metadata:
   name: loki-stack-grafana
   namespace: loki-stack
   labels:
-    helm.sh/chart: grafana-5.0.11
+    helm.sh/chart: grafana-5.2.1
     app.kubernetes.io/name: grafana
     app.kubernetes.io/instance: loki-stack
-    app.kubernetes.io/version: "6.7.1"
+    app.kubernetes.io/version: "6.7.0"
     app.kubernetes.io/managed-by: Helm
   annotations:
     seccomp.security.alpha.kubernetes.io/allowedProfileNames: 'docker/default'
@@ -61,10 +60,10 @@ metadata:
   name: loki-stack-grafana-test
   namespace: loki-stack
   labels:
-    helm.sh/chart: grafana-5.0.11
+    helm.sh/chart: grafana-5.2.1
     app.kubernetes.io/name: grafana
     app.kubernetes.io/instance: loki-stack
-    app.kubernetes.io/version: "6.7.1"
+    app.kubernetes.io/version: "6.7.0"
     app.kubernetes.io/managed-by: Helm
 spec:
   allowPrivilegeEscalation: true
@@ -95,7 +94,7 @@ metadata:
   namespace: loki-stack
   labels:
     app: loki
-    chart: loki-0.26.1
+    chart: loki-0.29.1
     heritage: Helm
     release: loki-stack
 spec:
@@ -135,7 +134,7 @@ metadata:
   namespace: loki-stack
   labels:
     app: promtail
-    chart: promtail-0.20.1
+    chart: promtail-0.23.1
     heritage: Helm
     release: loki-stack
 spec:
@@ -165,10 +164,10 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   labels:
-    helm.sh/chart: grafana-5.0.11
+    helm.sh/chart: grafana-5.2.1
     app.kubernetes.io/name: grafana
     app.kubernetes.io/instance: loki-stack
-    app.kubernetes.io/version: "6.7.1"
+    app.kubernetes.io/version: "6.7.0"
     app.kubernetes.io/managed-by: Helm
   name: loki-stack-grafana
   namespace: loki-stack
@@ -178,10 +177,10 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   labels:
-    helm.sh/chart: grafana-5.0.11
+    helm.sh/chart: grafana-5.2.1
     app.kubernetes.io/name: grafana
     app.kubernetes.io/instance: loki-stack
-    app.kubernetes.io/version: "6.7.1"
+    app.kubernetes.io/version: "6.7.0"
     app.kubernetes.io/managed-by: Helm
   name: loki-stack-grafana-test
   namespace: loki-stack
@@ -192,7 +191,7 @@ kind: ServiceAccount
 metadata:
   labels:
     app: loki
-    chart: loki-0.26.1
+    chart: loki-0.29.1
     heritage: Helm
     release: loki-stack
   annotations:
@@ -206,11 +205,29 @@ kind: ServiceAccount
 metadata:
   labels:
     app: promtail
-    chart: promtail-0.20.1
+    chart: promtail-0.23.1
     heritage: Helm
     release: loki-stack
   name: loki-stack-promtail
   namespace: loki-stack
+---
+# Source: loki-stack/charts/grafana/templates/secret.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: loki-stack-grafana
+  namespace: loki-stack
+  labels:
+    helm.sh/chart: grafana-5.2.1
+    app.kubernetes.io/name: grafana
+    app.kubernetes.io/instance: loki-stack
+    app.kubernetes.io/version: "6.7.0"
+    app.kubernetes.io/managed-by: Helm
+type: Opaque
+data:
+  admin-user: "YWRtaW4="
+  admin-password: "aDBhd2hEbzJxQmE3S29FQncwM0F5bXhVSWNwdmw0QmFRR1VVa0k0bQ=="
+  ldap-toml: ""
 ---
 # Source: loki-stack/charts/loki/templates/secret.yaml
 apiVersion: v1
@@ -220,11 +237,11 @@ metadata:
   namespace: loki-stack
   labels:
     app: loki
-    chart: loki-0.26.1
+    chart: loki-0.29.1
     release: loki-stack
     heritage: Helm
 data:
-  loki.yaml: YXV0aF9lbmFibGVkOiBmYWxzZQpjaHVua19zdG9yZV9jb25maWc6CiAgbWF4X2xvb2tfYmFja19wZXJpb2Q6IDAKaW5nZXN0ZXI6CiAgY2h1bmtfYmxvY2tfc2l6ZTogMjYyMTQ0CiAgY2h1bmtfaWRsZV9wZXJpb2Q6IDNtCiAgY2h1bmtfcmV0YWluX3BlcmlvZDogMW0KICBsaWZlY3ljbGVyOgogICAgcmluZzoKICAgICAga3ZzdG9yZToKICAgICAgICBzdG9yZTogaW5tZW1vcnkKICAgICAgcmVwbGljYXRpb25fZmFjdG9yOiAxCiAgbWF4X3RyYW5zZmVyX3JldHJpZXM6IDAKbGltaXRzX2NvbmZpZzoKICBlbmZvcmNlX21ldHJpY19uYW1lOiBmYWxzZQogIHJlamVjdF9vbGRfc2FtcGxlczogdHJ1ZQogIHJlamVjdF9vbGRfc2FtcGxlc19tYXhfYWdlOiAxNjhoCnNjaGVtYV9jb25maWc6CiAgY29uZmlnczoKICAtIGZyb206ICIyMDE4LTA0LTE1IgogICAgaW5kZXg6CiAgICAgIHBlcmlvZDogMTY4aAogICAgICBwcmVmaXg6IGluZGV4XwogICAgb2JqZWN0X3N0b3JlOiBmaWxlc3lzdGVtCiAgICBzY2hlbWE6IHY5CiAgICBzdG9yZTogYm9sdGRiCnNlcnZlcjoKICBodHRwX2xpc3Rlbl9wb3J0OiAzMTAwCnN0b3JhZ2VfY29uZmlnOgogIGJvbHRkYjoKICAgIGRpcmVjdG9yeTogL2RhdGEvbG9raS9pbmRleAogIGZpbGVzeXN0ZW06CiAgICBkaXJlY3Rvcnk6IC9kYXRhL2xva2kvY2h1bmtzCnRhYmxlX21hbmFnZXI6CiAgcmV0ZW50aW9uX2RlbGV0ZXNfZW5hYmxlZDogZmFsc2UKICByZXRlbnRpb25fcGVyaW9kOiAwcw==
+  loki.yaml: YXV0aF9lbmFibGVkOiBmYWxzZQpjaHVua19zdG9yZV9jb25maWc6CiAgbWF4X2xvb2tfYmFja19wZXJpb2Q6IDBzCmluZ2VzdGVyOgogIGNodW5rX2Jsb2NrX3NpemU6IDI2MjE0NAogIGNodW5rX2lkbGVfcGVyaW9kOiAzbQogIGNodW5rX3JldGFpbl9wZXJpb2Q6IDFtCiAgbGlmZWN5Y2xlcjoKICAgIHJpbmc6CiAgICAgIGt2c3RvcmU6CiAgICAgICAgc3RvcmU6IGlubWVtb3J5CiAgICAgIHJlcGxpY2F0aW9uX2ZhY3RvcjogMQogIG1heF90cmFuc2Zlcl9yZXRyaWVzOiAwCmxpbWl0c19jb25maWc6CiAgZW5mb3JjZV9tZXRyaWNfbmFtZTogZmFsc2UKICByZWplY3Rfb2xkX3NhbXBsZXM6IHRydWUKICByZWplY3Rfb2xkX3NhbXBsZXNfbWF4X2FnZTogMTY4aApzY2hlbWFfY29uZmlnOgogIGNvbmZpZ3M6CiAgLSBmcm9tOiAiMjAxOC0wNC0xNSIKICAgIGluZGV4OgogICAgICBwZXJpb2Q6IDE2OGgKICAgICAgcHJlZml4OiBpbmRleF8KICAgIG9iamVjdF9zdG9yZTogZmlsZXN5c3RlbQogICAgc2NoZW1hOiB2OQogICAgc3RvcmU6IGJvbHRkYgpzZXJ2ZXI6CiAgaHR0cF9saXN0ZW5fcG9ydDogMzEwMApzdG9yYWdlX2NvbmZpZzoKICBib2x0ZGI6CiAgICBkaXJlY3Rvcnk6IC9kYXRhL2xva2kvaW5kZXgKICBmaWxlc3lzdGVtOgogICAgZGlyZWN0b3J5OiAvZGF0YS9sb2tpL2NodW5rcwp0YWJsZV9tYW5hZ2VyOgogIHJldGVudGlvbl9kZWxldGVzX2VuYWJsZWQ6IGZhbHNlCiAgcmV0ZW50aW9uX3BlcmlvZDogMHM=
 ---
 # Source: loki-stack/charts/grafana/templates/configmap.yaml
 apiVersion: v1
@@ -233,10 +250,10 @@ metadata:
   name: loki-stack-grafana
   namespace: loki-stack
   labels:
-    helm.sh/chart: grafana-5.0.11
+    helm.sh/chart: grafana-5.2.1
     app.kubernetes.io/name: grafana
     app.kubernetes.io/instance: loki-stack
-    app.kubernetes.io/version: "6.7.1"
+    app.kubernetes.io/version: "6.7.0"
     app.kubernetes.io/managed-by: Helm
 data:
   grafana.ini: |
@@ -259,10 +276,10 @@ metadata:
   name: loki-stack-grafana-test
   namespace: loki-stack
   labels:
-    helm.sh/chart: grafana-5.0.11
+    helm.sh/chart: grafana-5.2.1
     app.kubernetes.io/name: grafana
     app.kubernetes.io/instance: loki-stack
-    app.kubernetes.io/version: "6.7.1"
+    app.kubernetes.io/version: "6.7.0"
     app.kubernetes.io/managed-by: Helm
 data:
   run.sh: |-
@@ -281,16 +298,16 @@ metadata:
   namespace: loki-stack
   labels:
     app: promtail
-    chart: promtail-0.20.1
+    chart: promtail-0.23.1
     release: loki-stack
     heritage: Helm
 data:
   promtail.yaml: |
     client:
       backoff_config:
-        maxbackoff: 5s
-        maxretries: 20
-        minbackoff: 100ms
+        max_period: 5s
+        max_retries: 20
+        min_period: 100ms
       batchsize: 102400
       batchwait: 1s
       external_labels: {}
@@ -334,11 +351,11 @@ data:
       - action: replace
         source_labels:
         - __meta_kubernetes_pod_name
-        target_label: instance
+        target_label: pod
       - action: replace
         source_labels:
         - __meta_kubernetes_pod_container_name
-        target_label: container_name
+        target_label: container
       - replacement: /var/log/pods/*$1/*.log
         separator: /
         source_labels:
@@ -381,11 +398,11 @@ data:
       - action: replace
         source_labels:
         - __meta_kubernetes_pod_name
-        target_label: instance
+        target_label: pod
       - action: replace
         source_labels:
         - __meta_kubernetes_pod_container_name
-        target_label: container_name
+        target_label: container
       - replacement: /var/log/pods/*$1/*.log
         separator: /
         source_labels:
@@ -434,11 +451,11 @@ data:
       - action: replace
         source_labels:
         - __meta_kubernetes_pod_name
-        target_label: instance
+        target_label: pod
       - action: replace
         source_labels:
         - __meta_kubernetes_pod_container_name
-        target_label: container_name
+        target_label: container
       - replacement: /var/log/pods/*$1/*.log
         separator: /
         source_labels:
@@ -489,11 +506,11 @@ data:
       - action: replace
         source_labels:
         - __meta_kubernetes_pod_name
-        target_label: instance
+        target_label: pod
       - action: replace
         source_labels:
         - __meta_kubernetes_pod_container_name
-        target_label: container_name
+        target_label: container
       - replacement: /var/log/pods/*$1/*.log
         separator: /
         source_labels:
@@ -537,11 +554,11 @@ data:
       - action: replace
         source_labels:
         - __meta_kubernetes_pod_name
-        target_label: instance
+        target_label: pod
       - action: replace
         source_labels:
         - __meta_kubernetes_pod_container_name
-        target_label: container_name
+        target_label: container
       - replacement: /var/log/pods/*$1/*.log
         separator: /
         source_labels:
@@ -557,7 +574,7 @@ metadata:
   namespace: loki-stack
   labels:
     app: loki-stack
-    chart: loki-stack-0.34.2
+    chart: loki-stack-0.37.4
     release: loki-stack
     heritage: Helm
     grafana_datasource: "1"
@@ -578,7 +595,7 @@ metadata:
   name: loki-stack-test
   labels:
     app: loki-stack
-    chart: loki-stack-0.34.2
+    chart: loki-stack-0.37.4
     release: loki-stack
     heritage: Helm
 data:
@@ -629,10 +646,10 @@ kind: ClusterRole
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   labels:
-    helm.sh/chart: grafana-5.0.11
+    helm.sh/chart: grafana-5.2.1
     app.kubernetes.io/name: grafana
     app.kubernetes.io/instance: loki-stack
-    app.kubernetes.io/version: "6.7.1"
+    app.kubernetes.io/version: "6.7.0"
     app.kubernetes.io/managed-by: Helm
   name: loki-stack-grafana-clusterrole
 rules:
@@ -646,7 +663,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   labels:
     app: promtail
-    chart: promtail-0.20.1
+    chart: promtail-0.23.1
     release: loki-stack
     heritage: Helm
   name: loki-stack-promtail-clusterrole
@@ -667,10 +684,10 @@ apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: loki-stack-grafana-clusterrolebinding
   labels:
-    helm.sh/chart: grafana-5.0.11
+    helm.sh/chart: grafana-5.2.1
     app.kubernetes.io/name: grafana
     app.kubernetes.io/instance: loki-stack
-    app.kubernetes.io/version: "6.7.1"
+    app.kubernetes.io/version: "6.7.0"
     app.kubernetes.io/managed-by: Helm
 subjects:
   - kind: ServiceAccount
@@ -688,7 +705,7 @@ metadata:
   name: loki-stack-promtail-clusterrolebinding
   labels:
     app: promtail
-    chart: promtail-0.20.1
+    chart: promtail-0.23.1
     release: loki-stack
     heritage: Helm
 subjects:
@@ -707,10 +724,10 @@ metadata:
   name: loki-stack-grafana
   namespace: loki-stack
   labels:
-    helm.sh/chart: grafana-5.0.11
+    helm.sh/chart: grafana-5.2.1
     app.kubernetes.io/name: grafana
     app.kubernetes.io/instance: loki-stack
-    app.kubernetes.io/version: "6.7.1"
+    app.kubernetes.io/version: "6.7.0"
     app.kubernetes.io/managed-by: Helm
 rules:
 - apiGroups:      ['extensions']
@@ -725,10 +742,10 @@ metadata:
   name: loki-stack-grafana-test
   namespace: loki-stack
   labels:
-    helm.sh/chart: grafana-5.0.11
+    helm.sh/chart: grafana-5.2.1
     app.kubernetes.io/name: grafana
     app.kubernetes.io/instance: loki-stack
-    app.kubernetes.io/version: "6.7.1"
+    app.kubernetes.io/version: "6.7.0"
     app.kubernetes.io/managed-by: Helm
 rules:
 - apiGroups:      ['policy']
@@ -744,7 +761,7 @@ metadata:
   namespace: loki-stack
   labels:
     app: loki
-    chart: loki-0.26.1
+    chart: loki-0.29.1
     heritage: Helm
     release: loki-stack
 rules:
@@ -761,7 +778,7 @@ metadata:
   namespace: loki-stack
   labels:
     app: promtail
-    chart: promtail-0.20.1
+    chart: promtail-0.23.1
     heritage: Helm
     release: loki-stack
 rules:
@@ -777,10 +794,10 @@ metadata:
   name: loki-stack-grafana
   namespace: loki-stack
   labels:
-    helm.sh/chart: grafana-5.0.11
+    helm.sh/chart: grafana-5.2.1
     app.kubernetes.io/name: grafana
     app.kubernetes.io/instance: loki-stack
-    app.kubernetes.io/version: "6.7.1"
+    app.kubernetes.io/version: "6.7.0"
     app.kubernetes.io/managed-by: Helm
 roleRef:
   apiGroup: rbac.authorization.k8s.io
@@ -798,10 +815,10 @@ metadata:
   name: loki-stack-grafana-test
   namespace: loki-stack
   labels:
-    helm.sh/chart: grafana-5.0.11
+    helm.sh/chart: grafana-5.2.1
     app.kubernetes.io/name: grafana
     app.kubernetes.io/instance: loki-stack
-    app.kubernetes.io/version: "6.7.1"
+    app.kubernetes.io/version: "6.7.0"
     app.kubernetes.io/managed-by: Helm
 roleRef:
   apiGroup: rbac.authorization.k8s.io
@@ -820,7 +837,7 @@ metadata:
   namespace: loki-stack
   labels:
     app: loki
-    chart: loki-0.26.1
+    chart: loki-0.29.1
     heritage: Helm
     release: loki-stack
 roleRef:
@@ -839,7 +856,7 @@ metadata:
   namespace: loki-stack
   labels:
     app: promtail
-    chart: promtail-0.20.1
+    chart: promtail-0.23.1
     heritage: Helm
     release: loki-stack
 roleRef:
@@ -857,10 +874,10 @@ metadata:
   name: loki-stack-grafana
   namespace: loki-stack
   labels:
-    helm.sh/chart: grafana-5.0.11
+    helm.sh/chart: grafana-5.2.1
     app.kubernetes.io/name: grafana
     app.kubernetes.io/instance: loki-stack
-    app.kubernetes.io/version: "6.7.1"
+    app.kubernetes.io/version: "6.7.0"
     app.kubernetes.io/managed-by: Helm
 spec:
   type: ClusterIP
@@ -882,7 +899,7 @@ metadata:
   namespace: loki-stack
   labels:
     app: loki
-    chart: loki-0.26.1
+    chart: loki-0.29.1
     release: loki-stack
     heritage: Helm
     variant: headless
@@ -905,7 +922,7 @@ metadata:
   namespace: loki-stack
   labels:
     app: loki
-    chart: loki-0.26.1
+    chart: loki-0.29.1
     release: loki-stack
     heritage: Helm
   annotations:
@@ -929,7 +946,7 @@ metadata:
   namespace: loki-stack
   labels:
     app: promtail
-    chart: promtail-0.20.1
+    chart: promtail-0.23.1
     release: loki-stack
     heritage: Helm
   annotations:
@@ -947,14 +964,14 @@ spec:
         app: promtail
         release: loki-stack
       annotations:
-        checksum/config: 7f0554b45ec2856d4fe74e9cc64a068827cd68ae46ffca2cf0391b80d544d433
+        checksum/config: 353e37f16632c07c66b9704b632d15608550d2876176770f8e8707556994d6ea
         prometheus.io/port: http-metrics
         prometheus.io/scrape: "true"
     spec:
       serviceAccountName: loki-stack-promtail
       containers:
         - name: promtail
-          image: "grafana/promtail:1.4.1"
+          image: "grafana/promtail:1.5.0"
           imagePullPolicy: IfNotPresent
           args:
             - "-config.file=/etc/promtail/promtail.yaml"
@@ -1022,10 +1039,10 @@ metadata:
   name: loki-stack-grafana
   namespace: loki-stack
   labels:
-    helm.sh/chart: grafana-5.0.11
+    helm.sh/chart: grafana-5.2.1
     app.kubernetes.io/name: grafana
     app.kubernetes.io/instance: loki-stack
-    app.kubernetes.io/version: "6.7.1"
+    app.kubernetes.io/version: "6.7.0"
     app.kubernetes.io/managed-by: Helm
 spec:
   replicas: 1
@@ -1041,19 +1058,20 @@ spec:
         app.kubernetes.io/name: grafana
         app.kubernetes.io/instance: loki-stack
       annotations:
-        checksum/config: 5b4ba8b7fe28c80e7319d44d338b176f523fe8a0ae0f5bdfee55eb8804a75087
+        checksum/config: ba951c977ff80e29ffb2c500ff8ff47a10484a6009a1d30838d2bd7fa0792b22
         checksum/dashboards-json-config: 01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b
         checksum/sc-dashboard-provider-config: 01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b
-        checksum/secret: da8446211df2b4aea8921e5dfe5090382a3570c6821e67266634fb14ffabb960
+        checksum/secret: 257aab51cab42242c4e7b2faede92b989f23966a9bfcef0c1412850ac0c56bad
     spec:
-
+      
       serviceAccountName: loki-stack-grafana
       securityContext:
         fsGroup: 472
+        runAsGroup: 472
         runAsUser: 472
       initContainers:
         - name: grafana-sc-datasources
-          image: "kiwigrid/k8s-sidecar:0.1.99"
+          image: "kiwigrid/k8s-sidecar:0.1.151"
           imagePullPolicy: IfNotPresent
           env:
             - name: METHOD
@@ -1134,7 +1152,7 @@ metadata:
   namespace: loki-stack
   labels:
     app: loki
-    chart: loki-0.26.1
+    chart: loki-0.29.1
     release: loki-stack
     heritage: Helm
   annotations:
@@ -1156,7 +1174,7 @@ spec:
         name: loki
         release: loki-stack
       annotations:
-        checksum/config: ea9047c6c8fdbc0f122290591aad95f50454200783f19dbe38e9694a76010775
+        checksum/config: 8d0ccbf14d80fd7151d5f22fe50a556d45576fef1df08915fedefc32f1505931
         prometheus.io/port: http-metrics
         prometheus.io/scrape: "true"
     spec:
@@ -1170,7 +1188,7 @@ spec:
         []
       containers:
         - name: loki
-          image: "grafana/loki:1.4.1"
+          image: "grafana/loki:1.5.0"
           imagePullPolicy: IfNotPresent
           args:
             - "-config.file=/etc/loki/loki.yaml"
@@ -1179,7 +1197,7 @@ spec:
               mountPath: /etc/loki
             - name: storage
               mountPath: "/data"
-              subPath:
+              subPath: 
           ports:
             - name: http-metrics
               containerPort: 3100
@@ -1219,10 +1237,10 @@ kind: Pod
 metadata:
   name: loki-stack-grafana-test
   labels:
-    helm.sh/chart: grafana-5.0.11
+    helm.sh/chart: grafana-5.2.1
     app.kubernetes.io/name: grafana
     app.kubernetes.io/instance: loki-stack
-    app.kubernetes.io/version: "6.7.1"
+    app.kubernetes.io/version: "6.7.0"
     app.kubernetes.io/managed-by: Helm
   annotations:
     "helm.sh/hook": test-success
@@ -1252,7 +1270,7 @@ metadata:
     "helm.sh/hook": test-success
   labels:
     app: loki-stack
-    chart: loki-stack-0.34.2
+    chart: loki-stack-0.37.4
     release: loki-stack
     heritage: Helm
   name: loki-stack-test
