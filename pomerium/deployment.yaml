@@ -7,9 +7,16 @@ spec:
   template:
     spec:
       containers:
-      - args:
-        - -config
-        - /etc/pomerium/policy.yaml
+      - name: pomerium
+        image: pomerium/pomerium:v0.8.3
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 443
+          name: https
+          protocol: TCP      
+        args:
+          - -config
+          - /etc/pomerium/policy.yaml
         env:
         - name: SERVICES
           value: all
@@ -17,6 +24,8 @@ spec:
           value: "true"
         - name: INSECURE_SERVER
           value: "TRUE"
+        - name: JWT_CLAIMS_HEADERS
+          value: "email"
         - name: IDP_PROVIDER
           valueFrom:
             configMapKeyRef:
@@ -62,19 +71,12 @@ spec:
             secretKeyRef:
               key: idp-client-secret
               name: pomerium
-        image: pomerium/pomerium
-        imagePullPolicy: Always
         livenessProbe:
           failureThreshold: 3
           httpGet:
             path: /ping
             port: 443
             scheme: HTTP
-        name: pomerium
-        ports:
-        - containerPort: 443
-          name: https
-          protocol: TCP
         readinessProbe:
           httpGet:
             path: /ping
